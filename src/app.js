@@ -1,7 +1,9 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const errorHandler = require('./middleware/errorHandler');
 const healthCheckRouter = require('./routes/health');
+const authRoutes = require('./routes/authRoutes');
 const { testConnection } = require('./config/db');
 
 dotenv.config();
@@ -10,8 +12,10 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use('/health', healthCheckRouter);
+app.use('/auth', authRoutes);
 
 app.use((req, res) => {
   res.status(404).json({

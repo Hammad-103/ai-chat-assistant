@@ -20,7 +20,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-64 bg-gray-800 h-screen flex flex-col border-r border-gray-700">
+    <div className="w-64 flex-shrink-0 h-full bg-gray-800 flex flex-col border-r border-gray-700">
       <div className="p-4 border-b border-gray-700">
         <button
           onClick={handleNewChat}
@@ -37,7 +37,7 @@ const Sidebar = () => {
         {sessions.length === 0 ? (
           <p className="text-gray-500 text-sm">No sessions yet</p>
         ) : (
-          <ul className="space-y-2">
+          <ul className="space-y-2 py-2">
             {sessions.map((session) => (
               <li key={session.id}>
                 <button
@@ -56,7 +56,7 @@ const Sidebar = () => {
         )}
       </div>
 
-      <div className="p-4 border-t border-gray-700">
+      <div className="mt-auto p-4 border-t border-gray-700">
         <button
           onClick={handleLogout}
           className="w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"

@@ -31,9 +31,9 @@ function App() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-900">
+    <div className="h-screen w-screen flex overflow-hidden bg-gray-900">
       <Sidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 h-full flex flex-col overflow-hidden">
         <ChatWindow />
         <MessageInput />
       </div>

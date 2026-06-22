@@ -1,37 +1,34 @@
-const { ChatGoogleGenerativeAI } = require('@langchain/google-genai');
+const { ChatGroq } = require("@langchain/groq");
 
-// Initialize the Google Gemini model
-const model = new ChatGoogleGenerativeAI({
-  apiKey: process.env.GOOGLE_API_KEY,
-  model: 'gemini-2.5-flash'
+// Initialize the Groq model
+const model = new ChatGroq({
+  apiKey: process.env.GROQ_API_KEY,
+  model: "llama-3.3-70b-versatile"
 });
 
 /**
  * Generate a response from the AI model
- * @param {string} userMessage - The user's message content
- * @returns {Promise<string>} - The AI's response text
- * @throws {Error} - If AI service is unavailable
+ * @param {string} userMessage
+ * @returns {Promise<string>}
  */
 const generateResponse = async (userMessage) => {
   try {
-    if (!userMessage || typeof userMessage !== 'string') {
-      throw new Error('Invalid message format');
+    if (!userMessage || typeof userMessage !== "string") {
+      throw new Error("Invalid message format");
     }
 
-    // Invoke the model with the user message
     const response = await model.invoke(userMessage);
 
-    // Extract and return the response content
     const responseText = response.content;
 
     if (!responseText) {
-      throw new Error('Empty response from AI model');
+      throw new Error("Empty response from AI model");
     }
 
     return responseText;
   } catch (error) {
-    console.error('AI Service Error:', error.message);
-    throw new Error('AI service unavailable');
+    console.error("AI Service Error:", error);
+    throw new Error("AI service unavailable");
   }
 };
 

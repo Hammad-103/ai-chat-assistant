@@ -47,6 +47,17 @@ const getSessionById = async (sessionId) => {
   return result.rows[0] || null;
 };
 
+const updateSessionTitle = async (sessionId, title) => {
+  const query = `
+    UPDATE chat_sessions
+    SET title = $1
+    WHERE id = $2
+    RETURNING id, user_id, title, created_at
+  `;
+
+  const result = await pool.query(query, [title, sessionId]);
+  return result.rows[0];
+};
 /**
  * Delete a session by ID
  * @param {number} sessionId - Session ID
@@ -65,5 +76,6 @@ module.exports = {
   createSession,
   getSessionsByUserId,
   getSessionById,
+  updateSessionTitle,
   deleteSession
 };

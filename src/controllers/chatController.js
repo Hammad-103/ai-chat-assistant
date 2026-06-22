@@ -12,8 +12,8 @@ const createSession = async (req, res, next) => {
     const { title } = req.body;
     const userId = req.user.userId;
 
-    // Use default title if not provided
-    const sessionTitle = title || `Chat ${new Date().toLocaleString()}`;
+    
+   const sessionTitle = title || 'New Chat';
 
     // Create session in database
     const session = await ChatSession.createSession(userId, sessionTitle);
@@ -122,7 +122,15 @@ const sendMessage = async (req, res, next) => {
 
     // Create user message
     const userMessage = await Message.createMessage(sessionId, 'user', content.trim());
+     if (session.title === 'New Chat') {
+  const title = content
+    .trim()
+    .split(' ')
+    .slice(0, 4)
+    .join(' ');
 
+  await ChatSession.updateSessionTitle(sessionId, title);
+   }
     // Get relevant context from uploaded documents if available
     const relevantContext = await getRelevantContext(sessionId, content.trim());
     

@@ -57,39 +57,39 @@ const Register = ({ onSwitchToLogin }) => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="name" className="block text-gray-300 mb-2">Name</label>
+        <form onSubmit={handleSubmit}>
+          <div className="flex flex-col gap-1.5 mb-4">
+            <label htmlFor="name" className="text-gray-300">Name</label>
             <input
               type="text"
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               required
             />
           </div>
 
-          <div>
-            <label htmlFor="email" className="block text-gray-300 mb-2">Email</label>
+          <div className="flex flex-col gap-1.5 mb-4">
+            <label htmlFor="email" className="text-gray-300">Email</label>
             <input
               type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               required
             />
           </div>
 
-          <div>
-            <label htmlFor="password" className="block text-gray-300 mb-2">Password</label>
+          <div className="flex flex-col gap-1.5 mb-4">
+            <label htmlFor="password" className="text-gray-300">Password</label>
             <input
               type="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               required
             />
           </div>
@@ -97,7 +97,7 @@ const Register = ({ onSwitchToLogin }) => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? 'Registering...' : 'Register'}
           </button>

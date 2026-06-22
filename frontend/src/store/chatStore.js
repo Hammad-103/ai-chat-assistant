@@ -12,7 +12,7 @@ const useChatStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.get('/chat/sessions');
-      set({ sessions: response.data.sessions, isLoading: false });
+      set({ sessions: response.data.data || [], isLoading: false });
     } catch (error) {
       set({ 
         error: error.response?.data?.message || 'Failed to fetch sessions', 
@@ -25,7 +25,7 @@ const useChatStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.post('/chat/sessions', { title });
-      const newSession = response.data.session;
+      const newSession = response.data.data;
       set((state) => ({ 
         sessions: [newSession, ...state.sessions],
         currentSessionId: newSession.id,
@@ -51,7 +51,7 @@ const useChatStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.get(`/chat/sessions/${sessionId}/messages`);
-      set({ messages: response.data.messages, isLoading: false });
+      set({ messages: response.data.data || [], isLoading: false });
     } catch (error) {
       set({ 
         error: error.response?.data?.message || 'Failed to fetch messages', 
@@ -61,7 +61,7 @@ const useChatStore = create((set) => ({
   },
 
   sendMessage: async (content) => {
-    const { currentSessionId, messages } = useChatStore.getState();
+    const { currentSessionId } = useChatStore.getState();
     if (!currentSessionId) {
       return { success: false, error: 'No session selected' };
     }
@@ -69,7 +69,7 @@ const useChatStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.post(`/chat/sessions/${currentSessionId}/messages`, { content });
-      const { userMessage, assistantMessage } = response.data;
+      const { userMessage, assistantMessage } = response.data.data || {};
       
       if (assistantMessage) {
         set((state) => ({ 

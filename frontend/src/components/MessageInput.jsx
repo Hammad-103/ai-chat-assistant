@@ -8,11 +8,13 @@ const MessageInput = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!content.trim() || !currentSessionId) return;
+    const trimmed = content.trim();
+    if (!trimmed || !currentSessionId) return;
 
-    const result = await sendMessage(content);
-    if (result.success) {
-      setContent('');
+    setContent('');
+    const result = await sendMessage(trimmed);
+    if (!result.success) {
+      setContent(trimmed);
     }
   };
 

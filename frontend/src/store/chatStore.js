@@ -66,33 +66,43 @@ const useChatStore = create((set) => ({
       return { success: false, error: 'No session selected' };
     }
 
-    set({ isLoading: true, error: null });
+    const optimisticId = `optimistic-${Date.now()}`;
+    const optimisticMessage = { id: optimisticId, role: 'user', content };
+
+    set((state) => ({
+      messages: [...state.messages, optimisticMessage],
+      isLoading: true,
+      error: null,
+    }));
+
     try {
       const response = await axiosInstance.post(`/chat/sessions/${currentSessionId}/messages`, { content });
       const { userMessage, assistantMessage } = response.data.data || {};
-      
-      if (assistantMessage) {
-        set((state) => ({ 
-          messages: [...state.messages, userMessage, assistantMessage],
-          isLoading: false 
-        }));
-      } else {
-        set((state) => ({ 
-          messages: [...state.messages, userMessage],
+
+      set((state) => {
+        const messages = state.messages.map((message) =>
+          message.id === optimisticId ? (userMessage || message) : message
+        );
+        if (assistantMessage) {
+          return { messages: [...messages, assistantMessage], isLoading: false };
+        }
+        return {
+          messages,
           error: 'AI response failed, but your message was saved',
-          isLoading: false 
-        }));
-      }
+          isLoading: false,
+        };
+      });
       return { success: true };
     } catch (error) {
       let errorMessage = error.response?.data?.message || 'Failed to send message';
       if (error.response?.status === 429) {
         errorMessage = "You're sending messages too quickly. Please wait a moment.";
       }
-      set({ 
+      set((state) => ({
+        messages: state.messages.filter((message) => message.id !== optimisticId),
         error: errorMessage,
-        isLoading: false 
-      });
+        isLoading: false,
+      }));
       return { success: false, error: errorMessage };
     }
   },

@@ -11,7 +11,7 @@ const useAuthStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.post('/auth/login', { email, password });
-      set({ user: response.data.user, isAuthenticated: true, isLoading: false });
+      set({ user: response.data.data, isAuthenticated: true, isLoading: false });
       return { success: true };
     } catch (error) {
       set({ 
@@ -26,7 +26,7 @@ const useAuthStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.post('/auth/register', { name, email, password });
-      set({ user: response.data.user, isAuthenticated: true, isLoading: false });
+      set({ user: response.data.data, isAuthenticated: true, isLoading: false });
       return { success: true };
     } catch (error) {
       set({ 
@@ -51,7 +51,7 @@ const useAuthStore = create((set) => ({
     set({ isLoading: true });
     try {
       const response = await axiosInstance.get('/auth/me');
-      set({ user: response.data.user, isAuthenticated: true, isLoading: false });
+      set({ user: response.data.data, isAuthenticated: true, isLoading: false });
     } catch (error) {
       set({ user: null, isAuthenticated: false, isLoading: false });
     }

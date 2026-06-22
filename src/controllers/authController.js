@@ -44,6 +44,19 @@ const register = async (req, res, next) => {
 
     const user = await User.createUser(name, email, hashedPassword);
 
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 3600000
+    });
+
     console.log(`\n✅ New user registered: ${email}`);
 
     return res.status(201).json({

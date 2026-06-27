@@ -1,7 +1,8 @@
-const pdfParse = require('pdf-parse');
 const { RecursiveCharacterTextSplitter } = require('@langchain/textsplitters');
 const { GoogleGenerativeAIEmbeddings } = require('@langchain/google-genai');
-const { MemoryVectorStore } = require('@langchain/classic/vectorstores/memory');// In-memory store for vector stores: sessionId -> MemoryVectorStore
+const { MemoryVectorStore } = require('@langchain/classic/vectorstores/memory');
+
+// In-memory store for vector stores: sessionId -> MemoryVectorStore
 const vectorStores = {};
 
 /**
@@ -12,6 +13,10 @@ const vectorStores = {};
  */
 const processDocument = async (sessionId, fileBuffer) => {
   try {
+    // Lazy-load pdf-parse only when this function actually runs,
+    // so it doesn't crash the whole serverless function on cold start
+    const pdfParse = require('pdf-parse');
+
     // Extract text from PDF
     const pdfData = await pdfParse(fileBuffer);
     const pdfText = pdfData.text;
